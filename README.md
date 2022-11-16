@@ -1,4 +1,4 @@
-Meta-morello
+meta-morello
 ==============
 
 Meta-morello provides the layers required to build the firmware that lives on the SD card and a Morello enabled
