@@ -3,7 +3,7 @@ Meta-morello
 
 Meta-morello provides the layers required to build the firmware that lives on the SD card and a Morello enabled
 Linux kernel for the Morello System Development Platform. The layers are using what was done at [1]
-in ARM's propitiatory build system and this was used as the starting point.
+in ARM's proprietary build system and this was used as the starting point.
 
 Booting the hardware
 --------------------
@@ -14,7 +14,7 @@ Running the SD card image builld
 --------------------------------
 
 $ TEMPLATECONF=meta-morello/conf . oe-init-build-env build \
-$ bitbake board-firmware-image \
+$ bitbake board-firmware-image
 
 Images
 ------
