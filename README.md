@@ -33,4 +33,4 @@ References
 
 [1] https://git.morello-project.org/morello \
 [2] https://developer.arm.com/documentation/den0132/0100/Setting-up-the-Morello-Hardware-Development-Platform \
-[3] https://developer.arm.com/documentation/102278/0001/?lang=en \
+[3] https://developer.arm.com/documentation/102278/0001/?lang=en
