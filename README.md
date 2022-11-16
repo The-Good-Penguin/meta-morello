@@ -13,8 +13,8 @@ For information on how to boot the hardware and how the hardware is booting see 
 Running the SD card image builld
 --------------------------------
 
-$ TEMPLATECONF=meta-morello/conf . oe-init-build-env build
-$ bitbake board-firmware-image
+$ TEMPLATECONF=meta-morello/conf . oe-init-build-env build \
+$ bitbake board-firmware-image \
 
 Images
 ------
