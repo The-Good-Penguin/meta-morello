@@ -31,6 +31,6 @@ and very easy to read. Follow the order found in the "headers" of each recipe an
 References
 ----------
 
-[1] https://git.morello-project.org/morello
-[2] https://developer.arm.com/documentation/den0132/0100/Setting-up-the-Morello-Hardware-Development-Platform
-[3] https://developer.arm.com/documentation/102278/0001/?lang=en
+[1] https://git.morello-project.org/morello \
+[2] https://developer.arm.com/documentation/den0132/0100/Setting-up-the-Morello-Hardware-Development-Platform \
+[3] https://developer.arm.com/documentation/102278/0001/?lang=en \
