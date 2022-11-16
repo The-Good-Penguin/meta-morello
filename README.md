@@ -5,6 +5,8 @@ Meta-morello provides the layers required to build the firmware that lives on th
 Linux kernel for the Morello System Development Platform. The layers are using what was done at [1]
 in ARM's proprietary build system and this was used as the starting point.
 
+Use https://github.com/The-Good-Penguin/morello-manifest to get all required dependencies.
+
 Booting the hardware
 --------------------
 
@@ -27,6 +29,11 @@ Adding new recipes
 
 Follow the coding style found in other layers, the aim here is to keep them consistent where possible
 and very easy to read. Follow the order found in the "headers" of each recipe and in general.
+
+Mailing list
+------------
+
+https://op-lists.linaro.org/mailman3/lists/linux-morello-distros.op-lists.linaro.org/
 
 References
 ----------
