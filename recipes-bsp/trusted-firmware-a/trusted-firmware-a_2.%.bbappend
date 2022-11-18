@@ -6,10 +6,10 @@ SECTION            = "firmware"
 
 PROVIDES          += "virtual/${OUTPUTS_NAME}"
 
-SUMMARY = "$DESCRIPTION"
+SUMMARY = "EDK2 to be compiled with LLVM Morello"
 SRC_URI = "gitsm://git.morello-project.org/morello/trusted-firmware-a;protocol=https;branch=${SRCBRANCH}"
 SRCREV  = "${AUTOREV}"
-PV      = "2.4+git${SRCPV}"
+PV      = "2.7+git${SRCPV}"
 
 SRCBRANCH        = "morello/master"
 LIC_FILES_CHKSUM = "file://docs/license.rst;md5=b2c740efedc159745b9b31f88ff03dde"
@@ -46,7 +46,6 @@ unset do_compile[cleandirs]
 do_deploy[noexec] = "1"
 
 do_compile:prepend() {
-    echo "${LLVM_PATH}"
     make -C ${S}/tools/fiptool
     make -C ${S}/tools/cert_create
 }
