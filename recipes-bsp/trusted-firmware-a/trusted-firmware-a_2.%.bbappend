@@ -1,4 +1,4 @@
-inherit llvm-morello-native
+inherit nopackages llvm-morello-native
 
 COMPATIBLE_MACHINE = "morello"
 OUTPUTS_NAME       = "trusted-firmware-a"

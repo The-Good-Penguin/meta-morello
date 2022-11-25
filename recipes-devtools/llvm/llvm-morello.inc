@@ -14,6 +14,8 @@ SRCBRANCH        = "morello/release-1.5"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=8a15a0759ef07f2682d2ba4b893c9afe"
 
 S             = "${WORKDIR}/git/llvm"
+S_git         = "${WORKDIR}/git"
+
 FILES:${PN}   = "/${OUTPUTS_NAME}"
 SYSROOT_DIRS += "/${OUTPUTS_NAME}"
 
@@ -115,4 +117,24 @@ do_compile() {
 do_install() {
   cd ${LLVM_BUILD_DIR}
   cmake --build . --target install
+  install -d ${LLVM_SHARED_SOURCE}
 }
+
+do_symlink[nostamp] = "1"
+
+python do_symlink() {
+    s = d.getVar("S_git")
+    if s[-1] == '/':
+        # drop trailing slash, so that os.symlink(src, s) doesn't use s as directory name and fail
+        s=s[:-1]
+    src = d.getVar("LLVM_SHARED_SOURCE")
+    if s != src:
+        bb.utils.mkdirhier(src)
+        bb.utils.remove(src, recurse=True)
+        os.symlink(s, src)
+    else:
+        import shutil
+        shutil.move(s, src)
+        os.symlink(src, s)
+}
+addtask do_symlink after do_install before do_build

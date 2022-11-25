@@ -12,17 +12,44 @@ Booting the hardware
 
 For information on how to boot the hardware and how the hardware is booting see [2] and [3].
 
-Running the SD card image builld
---------------------------------
+Machines
+--------
 
-$ TEMPLATECONF=meta-morello/conf . oe-init-build-env build \
-$ bitbake board-firmware-image
+The machines have been split into:  
+- morello-bsp for the SD card  
+- morello-linux for the Linux image  
+
+The morello-linux enviroment will be based purely on a capability aware
+toolchain. The morello-bsp is still using plain gcc for some of its outputs.
+The capabilities are enabled/disabled in the rootfs apps via MORELLO_ARCH flag found in
+the morello-linux.conf file.
+
+SD card image builld
+--------------------
+
+$ TEMPLATECONF=meta-morello/conf . oe-init-build-env build  
+$ MACHINE=morello-bsp bitbake board-firmware-image  
+
+Linux build
+-----------
+Work in progress, we can build the kernel and libc:
+
+$ TEMPLATECONF=meta-morello/conf . oe-init-build-env build  
+$ MACHINE=morello-linux bitbake virtual/kernel  
+$ MACHINE=morello-linux bitbake virtual/libc  
 
 Images
 ------
 
-The outputs can be found under build/deploy/images:
-- board-firmware-sd-image.img goes on the SD card
+The outputs can be found under build/deploy/images:  
+- board-firmware-sd-image.img goes on the SD card  
+
+Linux and musl-libc
+-------------------
+
+These packages are not versioned deliberately. For all we know the next iterations might have
+a completely different API. So every release tag will infer a new recipe. The linux kernel and musl-libc are locked in
+sync so that the release tags from upstream always match.
 
 Adding new recipes
 ------------------

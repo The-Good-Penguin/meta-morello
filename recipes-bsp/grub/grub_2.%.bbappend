@@ -1,4 +1,4 @@
-
+inherit nopackages
 
 COMPATIBLE_MACHINE = "morello"
 

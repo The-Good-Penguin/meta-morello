@@ -1,4 +1,4 @@
-inherit python3native llvm-morello-native
+inherit nopackages python3native llvm-morello-native
 
 COMPATIBLE_MACHINE = "morello"
 OUTPUTS_NAME       = "uefi"

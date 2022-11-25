@@ -1,4 +1,5 @@
-MACHINE = "morello"
+MACHINE ?= "morello-linux"
+MACHINE ?= "morello-bsp"
 
 BB_NUMBER_THREADS ?= "${@oe.utils.cpu_count()}"
 PARALLEL_MAKE ?= "-j ${@oe.utils.cpu_count()}"

@@ -1,4 +1,4 @@
-inherit cmake
+inherit cmake nopackages
 
 COMPATIBLE_MACHINE = "morello"
 OUTPUTS_NAME       = "scp-firmware"
@@ -29,6 +29,7 @@ FW_INSTALL = "ramfw_soc romfw"
 unset do_configure[noexec]
 unset do_compile[cleandirs]
 do_deploy[noexec] = "1"
+
 
 do_configure() {
 

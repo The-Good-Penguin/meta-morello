@@ -1,19 +1,19 @@
+inherit nopackages
 
-
-DESCRIPTION  = "LLVM used purely for compiling llvm-morello"
-HOMEPAGE     = "http://llvm.org"
+DESCRIPTION  = "GCC used purely for compiling the firmware binaries"
+HOMEPAGE     = "https://developer.arm.com/"
 LICENSE      = "Apache-2.0-with-LLVM-exception"
-OUTPUTS_NAME = "llvm-13.0.1"
+OUTPUTS_NAME = "gcc-9"
 
-PROVIDES     = "virtual/${OUTPUTS_NAME}"
+PROVIDES     = "virtual/gcc-none-eabi"
 
-SUMMARY = "LLVM 13.01"
-SRC_URI = "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.1/clang+llvm-13.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz"
+SUMMARY = "GCC 9"
+SRC_URI = "https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2"
 
 SRC_URI[md5sum]  = "041e3a5c735d5f956668254b1ffd35d1"
 LIC_FILES_CHKSUM = "file://include/llvm/Support/LICENSE.TXT;md5=986c03435151a0086b8aaac964939cdd"
 
-S             = "${WORKDIR}/clang+llvm-13.0.1-x86_64-linux-gnu-ubuntu-18.04"
+S             = "${WORKDIR}/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux"
 FILES:${PN}   = "/${OUTPUTS_NAME}"
 SYSROOT_DIRS += "/${OUTPUTS_NAME}"
 

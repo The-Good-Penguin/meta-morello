@@ -24,6 +24,6 @@ FILES:${PN}-staticdev += "/${OUTPUTS_NAME}/LIB/sensor.a"
 SYSROOT_DIRS          += "/${OUTPUTS_NAME}"
 
 do_install() {
-    mkdir -p "${D}/${OUTPUTS_NAME}"
+    install -d "${D}/${OUTPUTS_NAME}"
     cp -rf ${S}/* "${D}/${OUTPUTS_NAME}/"
 }
