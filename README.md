@@ -19,7 +19,7 @@ The machines have been split into:
 - morello-bsp for the SD card  
 - morello-linux for the Linux image  
 
-The morello-linux enviroment will be based purely on a capability aware
+The morello-linux environment will be based purely on a capability aware
 toolchain. The morello-bsp is still using plain gcc for some of its outputs.
 The capabilities are enabled/disabled in the rootfs apps via MORELLO_ARCH flag found in
 the morello-linux.conf file.
