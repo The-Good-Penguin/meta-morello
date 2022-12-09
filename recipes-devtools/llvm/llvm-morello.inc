@@ -1,12 +1,12 @@
 
 
+SUMMARY      = "CHERI enabled Linux kernel"
 HOMEPAGE     = "http://llvm.org"
 LICENSE      = "Apache-2.0-with-LLVM-exception"
 OUTPUTS_NAME = "llvm-morello"
 
-DEPENDS      = "zlib-native ninja-native ${COMPILER}"
+DEPENDS      = "zlib-native ninja-native ${COMPILER}-native"
 
-SUMMARY = "Arm's fork of CHERI LLVM toolchain that understands capabilities"
 SRC_URI = "git://git.morello-project.org/morello/llvm-project;protocol=https;branch=${SRCBRANCH}"
 SRCREV  = "cac045cbb70a9c8161f2f32fa5ef056242eb28f3"
 
@@ -16,8 +16,8 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=8a15a0759ef07f2682d2ba4b893c9afe"
 S             = "${WORKDIR}/git/llvm"
 S_git         = "${WORKDIR}/git"
 
-FILES:${PN}   = "/${OUTPUTS_NAME}"
-SYSROOT_DIRS += "/${OUTPUTS_NAME}"
+FILES:${PN}          = "/${OUTPUTS_NAME}"
+SYSROOT_DIRS_NATIVE += "/${OUTPUTS_NAME}"
 
 COMPILER     = "llvm-13.0.1"
 
@@ -26,11 +26,9 @@ LLVM_PROJECTS         = "libcxx;libcxxabi;compiler-rt;libunwind;llvm;clang;lld;l
 LLVM_BUILD_DIR        = "${WORKDIR}/${OUTPUTS_NAME}-build"
 LLVM_INSTALL_DIR      = "${D}/${OUTPUTS_NAME}"
 
-NATIVE_LLVM_PATH  = "${RECIPE_SYSROOT}/${COMPILER}/bin"
-LIB_PATH          = "${RECIPE_SYSROOT}/${COMPILER}/lib"
-LIB_PATH_RT       = "${RECIPE_SYSROOT}/${COMPILER}/lib/clang/13.0.1/lib/linux"
-
-CFLAGS+="-Wno-unused-but-set-variable"
+NATIVE_LLVM_PATH  = "${STAGING_LIBDIR_NATIVE}/${COMPILER}/bin"
+LIB_PATH          = "${STAGING_LIBDIR_NATIVE}/${COMPILER}/lib"
+LIB_PATH_RT       = "${STAGING_LIBDIR_NATIVE}/${COMPILER}/lib/clang/13.0.1/lib/linux"
 
 EXTRA_OECMAKE += "-Wno-dev -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
@@ -97,7 +95,7 @@ INHIBIT_PACKAGE_STRIP       = "1"
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_DEFAULT_DEPS        = "1"
 
-do_unpack[depends] += "${COMPILER}:do_populate_sysroot"
+do_unpack[depends] += "${COMPILER}-native:do_populate_sysroot"
 
 do_configure() {
     mkdir -p ${LLVM_BUILD_DIR}
@@ -119,8 +117,6 @@ do_install() {
   cmake --build . --target install
   install -d ${LLVM_SHARED_SOURCE}
 }
-
-do_symlink[nostamp] = "1"
 
 python do_symlink() {
     s = d.getVar("S_git")

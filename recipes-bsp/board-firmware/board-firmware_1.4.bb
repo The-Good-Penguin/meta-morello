@@ -1,7 +1,8 @@
 inherit nopackages
 
 COMPATIBLE_MACHINE = "morello"
-DESCRIPTION        = "The SD card image from ARM that contains, non compile-able binaries."
+SUMMARY            = "$DESCRIPTION"
+DESCRIPTION        = "The SD card image from ARM that contains non compile-able binaries."
 HOMEPAGE           = "https://git.morello-project.org/morello/board-firmware"
 LICENSE            = "STMicroelectronics&BSD-3 & BDS-2"
 OUTPUTS_NAME       = "board-firmware"
@@ -9,7 +10,6 @@ SECTION            = "firmware"
 
 PROVIDES += "virtual/${OUTPUTS_NAME}"
 
-SUMMARY = "$DESCRIPTION"
 SRC_URI = "git://git.morello-project.org/morello/board-firmware;protocol=https;branch=${SRCBRANCH}"
 SRCREV  = "20e3e673f13e854109a069dd719f49e06336142d"
 

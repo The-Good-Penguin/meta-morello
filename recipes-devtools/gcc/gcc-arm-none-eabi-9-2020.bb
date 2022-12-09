@@ -5,12 +5,12 @@ HOMEPAGE     = "https://developer.arm.com/"
 LICENSE      = "Apache-2.0-with-LLVM-exception"
 OUTPUTS_NAME = "gcc-9"
 
-PROVIDES     = "virtual/gcc-none-eabi"
+PROVIDES     = "virtual/arm-none-eabi"
 
 SUMMARY = "GCC 9"
 SRC_URI = "https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2"
 
-SRC_URI[md5sum]  = "041e3a5c735d5f956668254b1ffd35d1"
+SRC_URI[md5sum]  = "2b9eeccc33470f9d3cda26983b9d2dc6"
 LIC_FILES_CHKSUM = "file://include/llvm/Support/LICENSE.TXT;md5=986c03435151a0086b8aaac964939cdd"
 
 S             = "${WORKDIR}/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux"

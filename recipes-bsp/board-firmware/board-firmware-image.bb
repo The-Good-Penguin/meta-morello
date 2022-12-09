@@ -10,7 +10,7 @@ SECTION            = "firmware"
 
 BB_DONT_CACHE      = "1"
 
-DEPENDS           += "virtual/board-firmware virtual/scp-firmware virtual/trusted-firmware-a virtual/uefi mtools-native"
+DEPENDS           += "virtual/board-firmware virtual/scp-firmware virtual/trusted-firmware-a virtual/uefi virtual/grub-efi mtools-native"
 PROVIDES           = "virtual/board-firmware-image"
 
 MCP_BLOB_ID   = "54464222-a4cf-4bf8-b1b6-cee7dade539e"

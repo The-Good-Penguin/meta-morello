@@ -1,6 +1,7 @@
 inherit nopackages python3native llvm-morello-native
 
 COMPATIBLE_MACHINE = "morello"
+SUMMARY            = "EDK2 to be compiled with LLVM Morello"
 OUTPUTS_NAME       = "uefi"
 SECTION            = "firmware"
 
@@ -9,7 +10,6 @@ DEPENDS           += "acpica-native python3-native"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}:"
 
-SUMMARY = "$DESCRIPTION"
 SRC_URI = "\
     ${EDK2_SRC_URI};name=edk2;destsuffix=edk2 \
     ${EDK2_PLATFORMS_SRC_URI};name=edk2-platforms;destsuffix=edk2/edk2-platforms \
@@ -48,6 +48,8 @@ export CC_PATH                = "${LLVM_PATH}/clang"
 export LLVM_PATH_35           = "${LLVM_PATH}"
 
 do_deploy[noexec] = "1"
+
+INHIBIT_DEFAULT_DEPS = "1"
 
 do_install() {
     install -d ${D}/firmware

@@ -1,14 +1,23 @@
-LLVM_PATH   = "${STAGING_LIBDIR_NATIVE}/llvm-morello-native/bin"
-TOOLCHAIN   = "clang"
+MORELLO_COMPILER = "llvm-morello-native"
 
-COMPILER_RT = "-rtlib=libgcc ${UNWINDLIB}"
-UNWINDLIB   = "--unwindlib=libgcc"
+LLVM_VERSION = "13.0.0"
+LLVM_PATH    = "${STAGING_LIBDIR_NATIVE}/llvm-morello-native/bin"
 
-CXXFLAGS:append:toolchain-clang = " -stdlib=libstdc++"
-LDFLAGS:append:toolchain-clang  = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
+ELF_PATCHER  = "${STAGING_BINDIR_NATIVE}/elf-patcher"
 
-DEPENDS             += "virtual/llvm-morello-native"
-do_compile[depends] += "llvm-morello-native:do_populate_sysroot"
+TOOLCHAIN    = "clang"
+
+INHIBIT_DEFAULT_DEPS = "1"
+
+DEPENDS                                    += "virtual/llvm-morello-native"
+DEPENDS:append:morello-linux:class-target   = " virtual/musl-morello-libs-native virtual/elf-patcher-native"
+
+# rough hack to deal with llvm-morello not being a proper toolchain in its own meta yet
+DEPENDS:remove = "libgcc"
+
+do_configure[depends] += " ${@get_depends(d)}"
+
+LIBCPLUSPLUS       = "-stdlib-libc++"
 
 export CC          = "${LLVM_PATH}/clang"
 export CXX         = "${LLVM_PATH}/clang++"
@@ -16,6 +25,7 @@ export CPP         = "${LLVM_PATH}/clang"
 export CCLD        = "${LLVM_PATH}/clang"
 export RANLIB      = "${LLVM_PATH}/llvm-ranlib"
 export AR          = "${LLVM_PATH}/llvm-ar"
+export AS          = "${LLVM_PATH}/llvm-as"
 export NM          = "${LLVM_PATH}/llvm-nm"
 export OBJDUMP     = "${LLVM_PATH}/llvm-objdump"
 export OBJCOPY     = "${LLVM_PATH}/llvm-objcopy"
@@ -27,18 +37,13 @@ export LTO         = "-fuse-ld=lld"
 export HOSTCC      = "${LLVM_PATH}/clang"
 export LLVM_CONFIG = "${LLVM_PATH}/llvm-config"
 
-CCACHE_COMPILERCHECK:toolchain-clang ?= "%compiler% -v"
-HOST_CC_ARCH:prepend:toolchain-clang = "-target ${HOST_SYS} "
-CC:toolchain-clang      = "${LLVM_PATH}/clang"
-CXX:toolchain-clang     = "${LLVM_PATH}/clang++"
-CPP:toolchain-clang     = "${LLVM_PATH}/clang"
-CCLD:toolchain-clang    = "${LLVM_PATH}/clang"
-RANLIB:toolchain-clang  = "${LLVM_PATH}/llvm-ranlib"
-AR:toolchain-clang      = "${LLVM_PATH}/llvm-ar"
-NM:toolchain-clang      = "${LLVM_PATH}/llvm-nm"
-OBJDUMP:toolchain-clang = "${LLVM_PATH}/llvm-objdump"
-OBJCOPY:toolchain-clang = "${LLVM_PATH}/llvm-objcopy"
-STRIP:toolchain-clang   = "${LLVM_PATH}/llvm-strip"
-STRINGS:toolchain-clang = "${LLVM_PATH}/llvm-strings"
-READELF:toolchain-clang = "${LLVM_PATH}/llvm-readelf"
-LTO:toolchain-clang     = "-fuse-ld=lld"
+def get_depends(d):
+    if d.getVar('DEPENDENCIES'):
+        return "llvm-morello-native:do_populate_sysroot"
+    else:
+        return "llvm-morello-native:do_populate_sysroot virtual/libc:do_populate_sysroot"
+
+DEPENDENCIES:kernel              = "1"
+DEPENDENCIES:musl                = "1"
+DEPENDENCIES:musl-morello-native = "1"
+DEPENDENCIES                    ?= "0"

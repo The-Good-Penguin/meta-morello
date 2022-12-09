@@ -1,12 +1,12 @@
-inherit nopackages llvm-morello-native
+inherit deploy nopackages llvm-morello-native
 
 COMPATIBLE_MACHINE = "morello"
+SUMMARY            = "TF-A to be compiled with LLVM Morello"
 OUTPUTS_NAME       = "trusted-firmware-a"
 SECTION            = "firmware"
 
 PROVIDES          += "virtual/${OUTPUTS_NAME}"
 
-SUMMARY = "EDK2 to be compiled with LLVM Morello"
 SRC_URI = "gitsm://git.morello-project.org/morello/trusted-firmware-a;protocol=https;branch=${SRCBRANCH}"
 SRCREV  = "${AUTOREV}"
 PV      = "2.7+git${SRCPV}"
@@ -31,6 +31,8 @@ TFA_DEBUG        = "0"
 
 ARM_TF_ARCH = "aarch64"
 
+INHIBIT_DEFAULT_DEPS = "1"
+
 EXTRA_OEMAKE += "\
                 CREATE_KEYS=1 \
                 GENERATE_COT=1 \
@@ -43,7 +45,6 @@ EXTRA_OEMAKE += "\
             "
 
 unset do_compile[cleandirs]
-do_deploy[noexec] = "1"
 
 do_compile:prepend() {
     make -C ${S}/tools/fiptool
@@ -76,3 +77,9 @@ do_install() {
     install -m 0744 ${S}/tools/fiptool/fiptool "${D}/firmware/"fiptool
     install -m 0744 ${S}/tools/cert_create/cert_create "${D}/firmware/"cert_create
 }
+
+do_deploy() {
+    install -d  ${DEPLOYDIR}/${OUTPUTS_NAME}
+    cp -rf ${D}/firmware/morello-soc.dtb ${DEPLOYDIR}/${OUTPUTS_NAME}/morello-soc.dtb
+}
+addtask deploy after do_install before do_build

@@ -1,6 +1,4 @@
-inherit nopackages
 
-COMPATIBLE_MACHINE = "morello"
 
 EXTRA_OECONF+="\
                 --disable-efiemu \
