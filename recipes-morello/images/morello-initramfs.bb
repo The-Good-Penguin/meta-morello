@@ -7,7 +7,7 @@ LICENSE            = "MIT"
 LIC_FILES_CHKSUM   = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 OUTPUTS_NAME       = "morello-initramfs"
 
-DEPENDS           += "virtual/morello-busybox gen-init-cpio-native"
+DEPENDS           += "virtual/morello-busybox gen-init-cpio-native pure-cap-app"
 PROVIDES           = "${OUTPUTS_NAME}"
 
 BB_DONT_CACHE        = "1"
@@ -23,14 +23,8 @@ do_configure[noexec] = "1"
 do_compile[noexec]   = "1"
 do_deploy[depends]   = "virtual/morello-busybox:do_populate_sysroot"
 
-FILES:${PN} += "rootfs"
-SYSROOT_DIRS +="rootfs"
 
 do_install() {
-
-  install -d ${D}/rootfs
-  install ${WORKDIR}/files/README.md ${D}/rootfs/README.md
-  install ${WORKDIR}/files/init.sh ${D}/rootfs/init.sh
 
   local sysroot_prefix="recipe-sysroot"
 
@@ -43,8 +37,11 @@ do_install() {
   sed -e "s@%PREFIX%@/${sysroot_prefix}${prefix}@" \
     "${WORKDIR}/files/initramfs.list.tmp2" > "${WORKDIR}/files/initramfs.list.tmp1"
 
+  sed -e "s@%APP_DIR%@/${APP_DIR}@" \
+    "${WORKDIR}/files/initramfs.list.tmp1" > "${WORKDIR}/files/initramfs.list.tmp2"
+
   sed -e "s@%MUSL%@/${sysroot_prefix}/musl@" \
-    "${WORKDIR}/files/initramfs.list.tmp1" > "${WORKDIR}/files/initramfs.list"
+    "${WORKDIR}/files/initramfs.list.tmp2" > "${WORKDIR}/files/initramfs.list"
 
   install -d ${D}/${OUTPUTS_NAME}
 
@@ -53,8 +50,8 @@ do_install() {
   # I have tried absolute paths but I had to use env -C instead as it was moaning about files not being able to read
   {
     env -C ${WORKDIR} ${STAGING_BINDIR_NATIVE}/gen_init_cpio "${WORKDIR}/files/initramfs.list"
-  } | cat > ${D}/${OUTPUTS_NAME}/initramfs
-
+    env -C "${STAGING_DIR_TARGET}/" find . -not -path "./sysroot-providers*" -print0 | env -C "${STAGING_DIR_TARGET}/" cpio --null --owner +0:+0 --create --format=newc
+  } > ${D}/${OUTPUTS_NAME}/initramfs
 }
 
 do_deploy() {

@@ -11,5 +11,8 @@ dir  /usr                                                755 0 0
 dir  /usr/lib                                            755 0 0
 dir  /usr/bin                                            755 0 0
 dir  /etc                                                755 0 0
+
+dir /%APP_DIR%                                           755 0 0
+
 file /bin/busybox .%BUSYBOX%/busybox                     755 0 0
 file /init        .%FILES%/init.sh                       755 0 0
