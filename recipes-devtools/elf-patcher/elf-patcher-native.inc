@@ -11,7 +11,7 @@ PROVIDES     = "virtual/${OUTPUTS_NAME}-native"
 SRC_URI = " \
     git://git.morello-project.org/morello/morello-aarch64;protocol=https;branch=${SRCBRANCH} \
     "
-DEPENDS:remove:morello-linux = " virtual/elf-patcher-native"
+DEPENDS:remove:morello-linux = " virtual/elf-patcher-native  virtual/musl-morello-libs-native"
 
 SRCREV        = "${AUTOREV}"
 PV            = "${PN}+git${SRCPV}"
