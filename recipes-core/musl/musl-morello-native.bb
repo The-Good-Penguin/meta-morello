@@ -7,7 +7,6 @@ a native recipe dependant on a target recipe... which is actually the case, but 
 libc sysroot is NOT actually native, it is just a trick."
 
 PROVIDES = "virtual/musl-morello-native"
-DEPENDS  = ""
 
 BUILD_CC          = "${LLVM_PATH}/clang"
 BUILD_CXX         = "${LLVM_PATH}/clang++"

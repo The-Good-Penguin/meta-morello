@@ -4,7 +4,7 @@ require musl-morello-${MORELLO_ARCH}.inc
 DESCRIPTION    = "Libraries that go into the clang resource folder, \
                   search path for that folder is relative to clang directory itself."
 
-DEPENDS        = "musl-morello-native"
+DEPENDS       += "musl-morello-native"
 PROVIDES       = "virtual/musl-morello-libs-native"
 
 B_COMPILERRT   = "${WORKDIR}/build_compiler_rt"
