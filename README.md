@@ -64,7 +64,7 @@ To do list
 * can try append meta-clang instead
 * can try to use precomipled external toolchain like here https://github.com/MentorEmbedded/meta-sourcery/ instead
 * thus there are 3 paths to explore forward for the toolchain, Yocto expects target_prefixed toolchain binaries 
-- be considerate of incoming purecap GNUtoolchain (related to the above toolchain problem)
+- be considerate of incoming purecap GNU toolchain (related to the above toolchain problem)
 - sort out the packaging for llvm-morello-compiled packages (related to the above toolchain problem)
 - add KAS support
 
