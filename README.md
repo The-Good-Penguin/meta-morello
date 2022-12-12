@@ -40,7 +40,7 @@ Images
 
 The outputs can be found under build/temp/deploy/images:  
 - board-firmware-sd-image.img goes on the SD card  via DD  
-- moirello-linux-image.img goes on the USB via DD  
+- morello-linux-image.img goes on the USB via DD  
 - you do need to build the board-firmware-image to be able to build the morello-linux-image
 
 Linux and musl-libc
