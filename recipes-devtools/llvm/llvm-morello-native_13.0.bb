@@ -7,10 +7,9 @@ PN           = "${OUTPUTS_NAME}-native"
 
 require llvm-morello.inc
 
-FILES:${PN} += "${libdir}/${PN}"
+FILES:${PN} += "${prefix}"
 
-# TODO no real need for this
 do_install:append() {
-  install -d ${D}${libdir}/${PN}
-  cp -rvf ${LLVM_INSTALL_DIR}/* ${D}${libdir}/${PN} 
+  install -d ${D}${prefix}
+  cp -rvf ${LLVM_INSTALL_DIR}/* ${D}${prefix}
 }

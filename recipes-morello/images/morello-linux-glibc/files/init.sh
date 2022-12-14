@@ -30,9 +30,6 @@ for s in /init.sh.d/*.sh ; do
     test -e "$s" && . "$s"
 done
 
-echo "Mounting sdc2 as root fs"
-mount -o rw /dev/sdc2 /newroot
-
 ulimit -c unlimited
 
 echo "/bin/sh as PID 1!"

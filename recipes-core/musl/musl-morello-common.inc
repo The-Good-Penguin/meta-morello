@@ -1,4 +1,5 @@
 require musl-morello-${MORELLO_RELEASE_VERSION}.inc
+
 DESCRIPTION        = "CHERI enabled musl libc"
 OUTPUTS_NAME       = "libc"
 LICENSE            = "MIT"
@@ -17,10 +18,7 @@ PV           = "git${SRCPV}"
 S            = "${WORKDIR}/git"
 B            = "${WORKDIR}/build"
 
-OVERRIDES = "${MORELLO_ARCH} ${TCLIBC}"
-
-TARGET_INSTALL_DIR = "${D}"
-TARGET_INSTALL_DIR:append:gnu = "${MUSL_INSTALL_DIR}"
+TARGET_INSTALL_DIR = "${D}${MUSL_INSTALL_DIR}"
 
 INHIBIT_SYSROOT_STRIP       = "1"
 INHIBIT_PACKAGE_STRIP       = "1"
@@ -56,7 +54,7 @@ COMPILERRT_CMAKE = "-Wno-dev \
 do_configure() {
     export CFLAGS=""
     local config="${CONFIGUREOPTS}"
-    echo "Install dir ${TARGET_INSTALL_DIR} with ${TCLIBC}"
+    echo "Install dir ${TARGET_INSTALL_DIR} with ${TCLIBC} MACHINE_INC ${MACHINE_INC}"
     config="${config} --target=${ARCH_TRIPLE} ${EXTRA_CONFIGUREOPTS} --disable-shared"
 	${S}/configure ${config}
 }

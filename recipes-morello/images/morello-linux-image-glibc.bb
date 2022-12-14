@@ -1,13 +1,12 @@
 inherit deploy nopackages
 
-COMPATIBLE_MACHINE = "morello"
+COMPATIBLE_MACHINE = "morello-linux-glibc"
 SUMMARY            = "Bootable Morello Linux Image"
 DESCRIPTION        = "Image that goes on a bootable device, can be DD'ed onto a USB stick"
 LICENSE            = "MIT"
 LIC_FILES_CHKSUM   = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 OUTPUTS_NAME       = "morello-linux-image"
 
-BB_DONT_CACHE        = "1"
 INHIBIT_DEFAULT_DEPS = "1"
 
 DEPENDS           += "virtual/kernel morello-initramfs mtools-native e2fsprogs-native coreutils-native bc-native util-linux-native"
@@ -26,6 +25,7 @@ ESP_IMAGE            = "${OUTPUTS_NAME}-esp"
 
 do_configure[noexec] = "1"
 do_compile[noexec]   = "1"
+do_install[depends] += "${MORELLO_ROOTFS_IMAGE}:do_image_complete"
 
 def get_next_part_start (d):
     next_image_start = int(d.getVar('IMAGE_SECTORS')) + int(d.getVar('PART_START_ALIGNMENT')) + int(d.getVar('PART_START_ALIGNMENT')) - 1
@@ -64,13 +64,8 @@ do_install() {
     local part0="${BSP_GRUB_DIR}/grub-efi-bootaa64.efi"
     local part1="${BSP_GRUB_DIR}/grub-config.cfg"
     local part2="${BSP_DTB_DIR}/morello-soc.dtb"
-    local part3="${DEPLOY_DIR}/images/morello-linux/Image"
-    local part4="${DEPLOY_DIR}/images/morello-linux/morello-initramfs/initramfs"
-
-    # create empty ext4 rootfs
-    : > ${D}/root.img
-    truncate --size="${IMAGE_SIZE}M" ${D}/root.img
-    mkfs.ext4 ${D}/root.img
+    local part3="${DEPLOY_DIR}/images/morello-linux-glibc/Image"
+    local part4="${DEPLOY_DIR}/images/morello-linux-glibc/morello-initramfs/initramfs"
 
     # create the ESP
     dd if=/dev/zero of=${ESP_IMAGE}.img bs=1024K count=${IMAGE_SIZE}
@@ -88,11 +83,11 @@ do_install() {
     : > ${OUTPUTS_NAME}.img
     truncate --size="$(mult ${IMAGE_SIZE} 3)M" ${OUTPUTS_NAME}.img
 
-    create_gpt ${OUTPUTS_NAME}.img ${ESP_IMAGE}.img /home/pawel/Code/ArmMorello/linux/output/root.img
+    create_gpt ${OUTPUTS_NAME}.img ${ESP_IMAGE}.img ${DEPLOY_DIR}/images/morello-linux-glibc/rootfs-morello-linux-glibc.ext4
     install ${OUTPUTS_NAME}.img ${D}/${OUTPUTS_NAME}.img
 }
 
 do_deploy() {
-    install ${D}/${OUTPUTS_NAME}.img ${DEPLOYDIR}/${OUTPUTS_NAME}-${MORELLO_ARCH}.img
+    install ${D}/${OUTPUTS_NAME}.img ${DEPLOYDIR}/${OUTPUTS_NAME}-${MORELLO_ARCH}-${TCLIBC}.img
 }
 addtask deploy after do_install

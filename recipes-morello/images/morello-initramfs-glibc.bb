@@ -1,6 +1,6 @@
 inherit deploy nopackages
 
-COMPATIBLE_MACHINE = "morello"
+COMPATIBLE_MACHINE = "morello-linux-glibc"
 SUMMARY            = "Initramfs for busybox"
 DESCRIPTION        = "Initramfs for busybox, bypassing the Yocto way"
 LICENSE            = "MIT"
@@ -47,11 +47,11 @@ do_install() {
 
   rm -f ${D}/${OUTPUTS_NAME}/initramfs
 
-  # I have tried absolute paths but I had to use env -C instead as it was moaning about files not being able to read
   {
     env -C ${WORKDIR} ${STAGING_BINDIR_NATIVE}/gen_init_cpio "${WORKDIR}/files/initramfs.list"
-    env -C "${STAGING_DIR_TARGET}/" find . -not -path "./sysroot-providers*" -print0 | env -C "${STAGING_DIR_TARGET}/" cpio --null --owner +0:+0 --create --format=newc
+    env -C "${STAGING_DIR_TARGET}/${APP_DIR}/" find . -print0 | env -C "${STAGING_DIR_TARGET}/${APP_DIR}/" cpio --null --owner +0:+0 --create --format=newc
   } > ${D}/${OUTPUTS_NAME}/initramfs
+
 }
 
 do_deploy() {

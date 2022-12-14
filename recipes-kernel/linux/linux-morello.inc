@@ -1,6 +1,6 @@
 inherit llvm-morello-native
 require recipes-kernel/linux/linux-yocto.inc
-COMPATIBLE_MACHINE = "morello"
+COMPATIBLE_MACHINE = "morello-linux"
 SUMMARY            = "Morello Linux kernel fork"
 DESCRIPTION        = "Arm's fork of CHERI LLVM toolchain that understands capabilities"
 OUTPUTS_NAME       = "morello-linux"

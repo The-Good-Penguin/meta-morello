@@ -7,7 +7,7 @@ SECTION            = "base"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}:${THISDIR}/${PN}:"
 
-DEPENDS  += "virtual/kernel virtual/libc"
+DEPENDS  += "virtual/kernel virtual/musl-morello"
 PROVIDES += "virtual/morello-busybox"
 
 SRC_URI = " \

@@ -1,4 +1,5 @@
-MACHINE ?= "morello-linux"
+MACHINE ?= "morello-linux-musl"
+MACHINE ?= "morello-linux-glibc"
 MACHINE ?= "morello-bsp"
 
 BB_NUMBER_THREADS ?= "${@oe.utils.cpu_count()}"

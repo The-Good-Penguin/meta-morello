@@ -1,0 +1,18 @@
+dir  /bin                                                755 0 0
+dir  /include                                            755 0 0
+dir  /lib                                                755 0 0
+dir  /share                                              755 0 0
+dir  /dev                                                755 0 0
+dir  /proc                                               755 0 0
+dir  /sbin                                               755 0 0
+dir  /sys                                                755 0 0
+dir  /newroot                                            755 0 0
+dir  /usr                                                755 0 0
+dir  /usr/lib                                            755 0 0
+dir  /usr/bin                                            755 0 0
+dir  /etc                                                755 0 0
+
+dir /%APP_DIR%                                           755 0 0
+
+file /bin/busybox .%BUSYBOX%/busybox                     755 0 0
+file /init        .%FILES%/init.sh                       755 0 0

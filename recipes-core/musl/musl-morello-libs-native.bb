@@ -4,7 +4,7 @@ require musl-morello-${MORELLO_ARCH}.inc
 DESCRIPTION    = "Libraries that go into the clang resource folder, \
                   search path for that folder is relative to clang directory itself."
 
-DEPENDS       += "musl-morello-native"
+DEPENDS        += "musl-morello-native"
 PROVIDES       = "virtual/musl-morello-libs-native"
 
 B_COMPILERRT   = "${WORKDIR}/build_compiler_rt"
@@ -65,8 +65,8 @@ do_install() {
 
     install ${builddir}/lib/linux/libclang_rt.builtins-aarch64.a ${destdir}/libclang_rt.builtins.a
 
-    install -d ${D}${libdir}/llvm-morello-native/lib/clang/${LLVM_VERSION}/lib/${LIB_TRIPLE}
-    local install_dir=${D}${libdir}/llvm-morello-native/lib/clang/${LLVM_VERSION}/lib/${LIB_TRIPLE}
+    install -d ${D}${libdir}/clang/${LLVM_VERSION}/lib/${LIB_TRIPLE}
+    local install_dir=${D}${libdir}/clang/${LLVM_VERSION}/lib/${LIB_TRIPLE}
 
     install ${destdir}/clang_rt.crtbegin.o ${install_dir}/clang_rt.crtbegin.o
     install ${destdir}/clang_rt.crtend.o ${install_dir}/clang_rt.crtend.o

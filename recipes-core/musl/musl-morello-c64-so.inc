@@ -1,6 +1,5 @@
-PROVIDES:append:c64 = "virtual/musl-c64 virtual/libc virtual/crypt virtual/${OUTPUTS_NAME}-c64 virtual/crypt-c64"
-PROVIDES:append:a64 = "virtual/${OUTPUTS_NAME}-c64-static virtual/crypt-c64-static"
+PROVIDES += "virtual/${OUTPUTS_NAME}-c64 virtual/crypt-c64"
 
-do_install:append:c64() {
+do_install:append() {
     ln -rs ${TARGET_INSTALL_DIR}${libdir}/libc.so ${TARGET_INSTALL_DIR}${bindir}/ldd
 }

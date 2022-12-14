@@ -3,7 +3,7 @@ inherit llvm-morello-native native
 SUMMARY      = "Elf-patcher"
 DESCRIPTION  = "Tool for paching up elf e_flag with EF_AARCH64_CHERI_PURECAP"
 HOMEPAGE     = "http://llvm.org"
-LICENSE      = "BSD-3"
+LICENSE      = "BSD-3-Clause"
 OUTPUTS_NAME = "elf-patcher"
 
 PROVIDES     = "virtual/${OUTPUTS_NAME}-native"
@@ -11,7 +11,7 @@ PROVIDES     = "virtual/${OUTPUTS_NAME}-native"
 SRC_URI = " \
     git://git.morello-project.org/morello/morello-aarch64;protocol=https;branch=${SRCBRANCH} \
     "
-DEPENDS:remove:morello-linux = " virtual/elf-patcher-native  virtual/musl-morello-libs-native"
+DEPENDS:remove  = " virtual/elf-patcher-native virtual/musl-morello-libs-native"
 
 SRCREV        = "${AUTOREV}"
 PV            = "${PN}+git${SRCPV}"

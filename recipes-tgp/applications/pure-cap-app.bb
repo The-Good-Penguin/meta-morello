@@ -9,8 +9,6 @@ LIC_FILES_CHKSUM   = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ec
 
 PROVIDES           = "${OUTPUTS_NAME}"
 
-do_configure[depends] += "llvm-morello-native:do_populate_sysroot virtual/libc:do_populate_sysroot"
-
 FILES:${PN} += "/${APP_DIR} ${bindir}"
 SYSROOT_DIRS +="/${APP_DIR}"
 

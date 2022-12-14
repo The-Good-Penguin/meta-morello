@@ -3,25 +3,28 @@ inherit llvm-morello-native
 COMPATIBLE_MACHINE = "morello"
 SECTION            = "libs"
 
-DEPENDS            = "virtual/musl-morello-libs-native"
+DEPENDS:append     = " virtual/musl-morello-libs-native"
 
 MUSL_LDSO_ARCH = "aarch64"
 
-FILES:${PN}  += "${MUSL_INSTALL_DIR}/${datadir} ${MUSL_INSTALL_DIR}/${sysconfdir}"
-FILES:${PN}  += "${MUSL_INSTALL_DIR}/${includedir} ${MUSL_INSTALL_DIR}/${includedir}/sys \
-                 ${MUSL_INSTALL_DIR}/${includedir}/arpa ${MUSL_INSTALL_DIR}/${includedir}/bits \
-                 ${MUSL_INSTALL_DIR}/${includedir}/net ${MUSL_INSTALL_DIR}/${includedir}/netinet \
-                 ${MUSL_INSTALL_DIR}/${includedir}/netpacket ${MUSL_INSTALL_DIR}/${includedir}/arpa \
-                 ${MUSL_INSTALL_DIR}/${includedir}/scsi ${MUSL_INSTALL_DIR}/${includedir}/sys"
+FILES:${PN}  = "${MUSL_INSTALL_DIR}"
+FILES:${PN} += "${MUSL_INSTALL_DIR}${datadir} ${MUSL_INSTALL_DIR}${sysconfdir}"
+FILES:${PN} += "${MUSL_INSTALL_DIR}${includedir} ${MUSL_INSTALL_DIR}${includedir}/sys \
+                 ${MUSL_INSTALL_DIR}${includedir}/arpa ${MUSL_INSTALL_DIR}${includedir}/bits \
+                 ${MUSL_INSTALL_DIR}${includedir}/net ${MUSL_INSTALL_DIR}${includedir}/netinet \
+                 ${MUSL_INSTALL_DIR}${includedir}/netpacket ${MUSL_INSTALL_DIR}${includedir}/arpa \
+                 ${MUSL_INSTALL_DIR}${includedir}/scsi ${MUSL_INSTALL_DIR}${includedir}/sys"
 
-# lack of packaging hacks
-SYSROOT_DIRS += "/musl"
+SYSROOT_DIRS                     += "${MUSL_INSTALL_DIR}/musl"
+SYSROOT_DIRS:morello-linux-glibc += "${MUSL_INSTALL_DIR}"
 
 do_package[noexec]           = "1"
 do_package_write_rpm[noexec] = "1"
 do_packagedata[noexec]       = "1"
 
 do_install() {
+
+    echo "Installing into ${TARGET_INSTALL_DIR}"
 
     export CFLAGS=""
 
@@ -41,8 +44,8 @@ do_install() {
 
     install -d ${destdir}${bindir} ${TARGET_INSTALL_DIR}${sysconfdir}
 
-    echo "${base_libdir}" > ${TARGET_INSTALL_DIR}${sysconfdir}/ld-musl-${MUSL_LDSO_ARCH}.path
-    echo "${libdir}" >> ${TARGET_INSTALL_DIR}${sysconfdir}/ld-musl-${MUSL_LDSO_ARCH}.path
+    echo "${TARGET_INSTALL_DIR}${base_libdir}" > ${TARGET_INSTALL_DIR}${sysconfdir}/ld-musl-${MUSL_LDSO_ARCH}.path
+    echo "${TARGET_INSTALL_DIR}${libdir}" >> ${TARGET_INSTALL_DIR}${sysconfdir}/ld-musl-${MUSL_LDSO_ARCH}.path
 
     install -d ${TARGET_INSTALL_DIR}/musl
     install ${TARGET_INSTALL_DIR}${sysconfdir}/ld-musl-${MUSL_LDSO_ARCH}.path ${TARGET_INSTALL_DIR}/musl/ld-musl-${MUSL_LDSO_ARCH}.path
