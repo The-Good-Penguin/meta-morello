@@ -5,7 +5,7 @@ Meta-morello provides the layers required to build the firmware that lives on th
 Linux kernel for the Morello System Development Platform. The layers are using what was done at [1]
 in ARM's proprietary build system and this was used as the starting point.
 
-Use https://github.com/The-Good-Penguin/morello-manifest to get all required dependencies or use the provided KAS scripts.
+Use https://github.com/The-Good-Penguin/morello-manifest to get all required dependencies or use the provided kas scripts.
 
 Booting the hardware
 --------------------
@@ -36,7 +36,7 @@ or (mutually exclusive)
 $ TEMPLATECONF=meta-morello/conf . oe-init-build-env build  
 $ MACHINE=morello-linux-glibc bitbake morello-linux-image  
 
-Alternatively one can use KAS:
+Alternatively one can use kas:
 
 kas build ./kas/morello-bsp.yml
 kas build ./kas/morello-linux-glibc.yml
@@ -73,7 +73,7 @@ To do list
 * thus there are 3 paths to explore forward for the toolchain, Yocto expects target_prefixed toolchain binaries
 - be considerate of incoming purecap GNU toolchain (related to the above toolchain problem)
 - sort out the packaging for llvm-morello-compiled packages (related to the above toolchain problem)
-- add multiconfig conf to build all outputs in one go and have an actual hard dependency between the firmware and the linux image
+- add a multiconfig conf to build all outputs in one go and have an actual hard dependency between the firmware and the linux image
 
 Adding new recipes
 ------------------
