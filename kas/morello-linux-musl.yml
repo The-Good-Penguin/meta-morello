@@ -1,0 +1,7 @@
+header:
+  version: 11
+  includes:
+    - base.yml
+machine: morello-linux-musl
+target:
+  - morello-linux-image

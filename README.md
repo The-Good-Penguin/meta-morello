@@ -5,7 +5,7 @@ Meta-morello provides the layers required to build the firmware that lives on th
 Linux kernel for the Morello System Development Platform. The layers are using what was done at [1]
 in ARM's proprietary build system and this was used as the starting point.
 
-Use https://github.com/The-Good-Penguin/morello-manifest to get all required dependencies.
+Use https://github.com/The-Good-Penguin/morello-manifest to get all required dependencies or use the provided KAS scripts.
 
 Booting the hardware
 --------------------
@@ -20,14 +20,13 @@ The machines have been split into:
 - morello-linux-musl for the Linux image with musl being the only libc
 - morello-linux-glibc for the Linux image with an arbitrary Yocto image as the rootfs (not switching to it though, not tested)
 
-SD card image builld
+Building images
 --------------------
 
 $ TEMPLATECONF=meta-morello/conf . oe-init-build-env build  
 $ MACHINE=morello-bsp bitbake board-firmware-image  
 
-Linux build
------------
+then:
 
 $ TEMPLATECONF=meta-morello/conf . oe-init-build-env build  
 $ MACHINE=morello-linux-musl bitbake morello-linux-image  
@@ -36,6 +35,11 @@ or (mutually exclusive)
 
 $ TEMPLATECONF=meta-morello/conf . oe-init-build-env build  
 $ MACHINE=morello-linux-glibc bitbake morello-linux-image  
+
+Alternatively one can use KAS:
+
+kas build ./kas/morello-bsp.yml
+kas build ./kas/morello-linux-glibc.yml
 
 Images
 ------
@@ -66,10 +70,10 @@ To do list
 - create clang-morello toolchain, follow the guide here http://www.openembedded.org/wiki/Adding_a_secondary_toolchain and move llvm-morello to its own layer
 * can try append meta-clang instead
 * can try to use precomipled external toolchain like here https://github.com/MentorEmbedded/meta-sourcery/ instead
-* thus there are 3 paths to explore forward for the toolchain, Yocto expects target_prefixed toolchain binaries 
+* thus there are 3 paths to explore forward for the toolchain, Yocto expects target_prefixed toolchain binaries
 - be considerate of incoming purecap GNU toolchain (related to the above toolchain problem)
 - sort out the packaging for llvm-morello-compiled packages (related to the above toolchain problem)
-- add KAS support
+- add multiconfig conf to build all outputs in one go and have an actual hard dependency between the firmware and the linux image
 
 Adding new recipes
 ------------------
