@@ -56,7 +56,7 @@ Known limitations
 -----------------
 
 - the current state of this layer is meant to be just a starting point and foundation for further development, the main aim was to have working Linux images ASAP for the community, do not expect elegant Yocto solutions yet
-- Yocto packaging is disabled due for the Morello apps due to not fully implemented toolchain (llvm-morello is a overrride bootstrap of the env variables), one of the packaging classes will drop an error as it expects a target_prefix-objcopy being available for example (in theory only applies to linux-morello-musl machine, have not tested if one can package Morello apps onto standard Yocto images)
+- Yocto packaging is disabled for the Morello apps due to not fully implemented toolchain (llvm-morello is an overrride bootstrap of the env variables), one of the packaging classes will drop an error as it expects a target_prefix-objcopy being available for example (in theory only applies to linux-morello-musl machine, have not tested if one can package Morello apps onto standard Yocto images)
 - it follows that the final image is assembled manually
 - the rtl_nic driver is missing
 
