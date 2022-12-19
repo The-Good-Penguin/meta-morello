@@ -1,0 +1,72 @@
+From 6040ff1d58789736b2c3547fa7803cb173981cb5 Mon Sep 17 00:00:00 2001
+From: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
+Date: Thu, 5 Jan 2023 10:27:45 +0000
+Subject: [PATCH] Remove elf patch, append toolchain with relative paths.
+
+Toolchain 1.5 does not require the elf patcher.
+---
+ Makefile | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index f9d916f98..4c95c8d56 100644
+--- a/Makefile
++++ b/Makefile
+@@ -142,10 +142,9 @@ VPATH		:= $(srctree)$(if $(KBUILD_EXTMOD),:$(KBUILD_EXTMOD))
+ # Morello Settings
+ MORELLO_TARGET		:= aarch64-linux-musl_purecap
+ MORELLO_FLAGS		:= -Wno-cheri-inefficient -march=morello+c64
+-ELF_PATCH		:= morello_elf
+ MUSL_HOME		:= ../../musl-bin
+ KHEADERS		:= ../morello-linux-headers/usr/include/
+-CLANG_RESOURCE_DIR	:= $(shell clang -print-resource-dir)
++CLANG_RESOURCE_DIR	:= $(shell ${LLVM_PATH}/clang -print-resource-dir)
+ 
+ export srctree objtree VPATH TOPDIR
+ 
+@@ -296,16 +295,16 @@ MAKEFLAGS += -rR
+ 
+ # Make variables (CC, etc...)
+ 
+-AS		= llvm-as
+-CC_		= clang
++AS		= ${LLVM_PATH}/llvm-as
++CC_		= ${LLVM_PATH}/clang
+ CC		= $(CC_) --target=${MORELLO_TARGET} --sysroot ${MUSL_HOME} ${MORELLO_FLAGS}
+ LD		= $(CC) -fuse-ld=lld -rtlib=compiler-rt
+ CPP		= $(CC) -E
+-AR		= llvm-ar
+-NM		= llvm-nm
+-STRIP		= llvm-strip
+-OBJCOPY		= llvm-objcopy
+-OBJDUMP		= llvm-objdump
++AR		= ${LLVM_PATH}/llvm-ar
++NM		= ${LLVM_PATH}/llvm-nm
++STRIP		= ${LLVM_PATH}/llvm-strip
++OBJCOPY		= ${LLVM_PATH}/llvm-objcopy
++OBJDUMP		= ${LLVM_PATH}/llvm-objdump
+ PKG_CONFIG	?= $(CROSS_COMPILE)pkg-config
+ AWK		= awk
+ GENKSYMS	= scripts/genksyms/genksyms
+@@ -541,7 +540,7 @@ endif
+ # command line.
+ # This allow a user to issue only 'make' to build a kernel including modules
+ # Defaults busybox but it is usually overridden in the arch makefile
+-all: busybox doc busybox_gen_elf
++all: busybox doc
+ 
+ # arch Makefile may override CC so keep this after arch Makefile is included
+ #bbox# NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
+@@ -731,9 +730,6 @@ else
+ 	$(Q)chmod a+x $@
+ endif
+ 
+-busybox_gen_elf:
+-	${Q}${ELF_PATCH} busybox
+-
+ # The actual objects are generated when descending,
+ # make sure no implicit rule kicks in
+ $(sort $(busybox-all)): $(busybox-dirs) ;
+-- 
+2.34.1
+
