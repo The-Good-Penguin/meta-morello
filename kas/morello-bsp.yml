@@ -1,0 +1,7 @@
+header:
+  version: 11
+  includes:
+    - base.yml
+machine: morello-bsp
+target:
+  - board-firmware-image

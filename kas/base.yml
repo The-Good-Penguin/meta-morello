@@ -1,0 +1,33 @@
+header:
+  version: 11
+distro: ""
+repos:
+  poky:
+    path: poky
+    url: "https://git.yoctoproject.org/poky"
+    refspec: kirkstone
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp: excluded
+  meta-arm:
+    path: poky/meta-arm
+    url: "https://git.yoctoproject.org/meta-arm"
+    refspec: kirkstone
+    layers:
+      meta-arm:
+      meta-arm-bsp:
+      meta-arm-toolchain:
+  meta-morello:
+      path: poky/meta-morello
+      url: "https://github.com/The-Good-Penguin/meta-morello"
+      refspec: kirkstone
+bblayers_conf_header:
+  custom-local-conf: |
+    LCONF_VERSION = "7"
+
+    YOCTOROOT := "${@os.path.abspath(os.path.dirname(d.getVar('FILE', True)) + '/../..')}"
+local_conf_header:
+  base: |
+    CONF_VERSION = "2"
+    EXTRA_IMAGE_FEATURES ?= "debug-tweaks"
