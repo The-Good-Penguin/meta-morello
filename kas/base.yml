@@ -25,9 +25,6 @@ bblayers_conf_header:
   custom-local-conf: |
     LCONF_VERSION = "7"
 
-    BB_NUMBER_THREADS="6"
-    PARALLEL_MAKE="-j6"
-
     YOCTOROOT := "${@os.path.abspath(os.path.dirname(d.getVar('FILE', True)) + '/../..')}"
 local_conf_header:
   base: |

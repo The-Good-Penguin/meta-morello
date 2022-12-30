@@ -17,7 +17,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}:"
 
 SRC_URI = "file://files/init.sh \
            file://files/initramfs.list.template \
-           file://files/README.md \
            "
 do_configure[noexec] = "1"
 do_compile[noexec]   = "1"
@@ -49,7 +48,9 @@ do_install() {
 
   {
     env -C ${WORKDIR} ${STAGING_BINDIR_NATIVE}/gen_init_cpio "${WORKDIR}/files/initramfs.list"
-    env -C "${STAGING_DIR_TARGET}/${APP_DIR}/" find . -print0 | env -C "${STAGING_DIR_TARGET}/${APP_DIR}/" cpio --null --owner +0:+0 --create --format=newc
+    env -C "${STAGING_DIR_TARGET}/" find . -not -path "./sysroot-providers*" \
+    -not -path "./lib*" -not -path "./usr*" -not -path "./busybox*" -not -path "./etc*" -print0 | \
+    env -C "${STAGING_DIR_TARGET}/" cpio --null --owner +0:+0 --create --format=newc
   } > ${D}/${OUTPUTS_NAME}/initramfs
 
 }

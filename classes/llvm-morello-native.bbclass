@@ -6,8 +6,6 @@ LLVM_PATH    = "${STAGING_DIR_NATIVE}/usr/bin"
 
 ELF_PATCHER  = "${STAGING_BINDIR_NATIVE}/elf-patcher"
 
-TOOLCHAIN    = "clang"
-
 INHIBIT_DEFAULT_DEPS = "1"
 
 DEPENDS                                        += "virtual/llvm-morello-native"

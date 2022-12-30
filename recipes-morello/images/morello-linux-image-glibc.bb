@@ -9,36 +9,59 @@ OUTPUTS_NAME       = "morello-linux-image"
 
 INHIBIT_DEFAULT_DEPS = "1"
 
-DEPENDS           += "virtual/kernel morello-initramfs mtools-native e2fsprogs-native coreutils-native bc-native util-linux-native"
-PROVIDES           = "${OUTPUTS_NAME}"
+DEPENDS             += "virtual/kernel morello-initramfs mtools-native e2fsprogs-native coreutils-native bc-native util-linux-native"
+PROVIDES             = "${OUTPUTS_NAME}"
 
-IMAGE_SIZE           = "100"
-
-# Yocto does not like function derived vars expanded in other functions, it does not like passing by argument from non-constant
-# variables either...so I am just cheerfully hardcoding this as I have more important things to do in life
-IMAGE_SECTORS        = "204800"
+ESP_SIZE             = "100"
+BOOT_SECTORS         = "204800"
 
 LBA                  = "512"
 PART_START_ALIGNMENT = "2048"
 
 ESP_IMAGE            = "${OUTPUTS_NAME}-esp"
 
-do_configure[noexec] = "1"
-do_compile[noexec]   = "1"
-do_install[depends] += "${MORELLO_ROOTFS_IMAGE}:do_image_complete"
+ROOTFS               = "${DEPLOY_DIR}/images/morello-linux-glibc/rootfs-morello-linux-glibc.ext4"
+
+do_compile[noexec]        = "1"
+do_configure[depends]    += "${MORELLO_ROOTFS_IMAGE}:do_image_complete morello-initramfs:do_deploy"
+do_configure[mcdepends]  += "mc:${BB_CURRENT_MC}:morello-firmware:board-firmware-image:do_deploy"
 
 def get_next_part_start (d):
-    next_image_start = int(d.getVar('IMAGE_SECTORS')) + int(d.getVar('PART_START_ALIGNMENT')) + int(d.getVar('PART_START_ALIGNMENT')) - 1
+    next_image_start = int(d.getVar('BOOT_SECTORS')) + int(d.getVar('PART_START_ALIGNMENT')) + int(d.getVar('PART_START_ALIGNMENT')) - 1
     next_image_start = next_image_start & ~(int(d.getVar('PART_START_ALIGNMENT')) -1)
     return next_image_start
+
+mult() {
+    local ret=$(echo "${1} * ${2}" | bc)
+    echo ${ret}
+}
+
+add() {
+    local ret=$(echo "${1} + ${2}" | bc)
+    echo ${ret}
+}
+
+div() {
+    local ret=$(echo "${1} / ${2}" | bc)
+    echo ${ret}
+}
+
+get_size() {
+    local link=$(readlink -f ${1})
+    local size=$(stat --dereference --format="%s" ${link})
+    local ret=${size% *}
+    echo ${ret}
+}
 
 add_to_image() {
     mcopy -i ${1} -m -D overwrite ${2} ::${3}
 }
 
-mult() {
-    local ret=$(echo "${1} * ${2}" | bc)
-    echo ${ret}
+get_uuid() {
+    local part="$(blkid ${1})"
+    local tmp=${part#*\"}
+    local uuid=$(echo $tmp | head -c 36)
+    echo ${uuid}
 }
 
 create_gpt() {
@@ -49,26 +72,45 @@ create_gpt() {
     local part_start_esp=${PART_START_ALIGNMENT}
     local part_start_linux="${@get_next_part_start(d)}"
 
+    local size=$(get_size ${ROOTFS})
+    local tmp=$(add ${size} ${LBA})
+
+    local rootfs_sectors=$(div ${tmp} ${LBA})
+    local rootfs_uuid=$(get_uuid ${ROOTFS})
+
+    echo "Sectors $rootfs_sectors ${BOOT_SECTORS}"
+
     {
         echo "label: gpt"
-        echo "start=${part_start_esp}, size=${IMAGE_SECTORS}, name=ESP, type=${esp_type}"
-        echo "start=${part_start_linux}, size=${IMAGE_SECTORS}, name=root, type=${linux_type}"
+        echo "start=${part_start_esp}, size=${BOOT_SECTORS}, name=ESP, type=${esp_type}"
+        echo "start=${part_start_linux}, size=${rootfs_sectors}, name=root, type=${linux_type}, uuid=${rootfs_uuid}"
     } | sfdisk -q "${1}"
 
     dd if="${2}" of="${1}" seek=$(mult ${part_start_esp} ${LBA}) bs=8M conv=notrunc,sparse oflag=seek_bytes status=progress
     dd if="${3}" of="${1}" seek=$(mult ${part_start_linux} ${LBA}) bs=8M conv=notrunc,sparse oflag=seek_bytes status=progress
 }
 
+do_configure() {
+    local grub="${BSP_GRUB_DIR}/grub-config.cfg"
+    local uuid=$(get_uuid ${ROOTFS})
+    echo ${uuid}
+    rm -f ${BSP_GRUB_DIR}/grub-config.cfg.processed
+    sed -e "s@%UUID%@${uuid}@" \
+    "${BSP_GRUB_DIR}/grub-config.cfg" > "${BSP_GRUB_DIR}/grub-config.cfg.processed"
+}
+
 do_install() {
 
     local part0="${BSP_GRUB_DIR}/grub-efi-bootaa64.efi"
-    local part1="${BSP_GRUB_DIR}/grub-config.cfg"
+    local part1="${BSP_GRUB_DIR}/grub-config.cfg.processed"
     local part2="${BSP_DTB_DIR}/morello-soc.dtb"
     local part3="${DEPLOY_DIR}/images/morello-linux-glibc/Image"
     local part4="${DEPLOY_DIR}/images/morello-linux-glibc/morello-initramfs/initramfs"
 
+    rm -f ${ESP_IMAGE}.img
+
     # create the ESP
-    dd if=/dev/zero of=${ESP_IMAGE}.img bs=1024K count=${IMAGE_SIZE}
+    dd if=/dev/zero of=${ESP_IMAGE}.img bs=1024K count=${ESP_SIZE}
     mformat -i ${ESP_IMAGE}.img -v ESP ::
 
     mmd -i ${ESP_IMAGE}.img ::/EFI
@@ -80,14 +122,24 @@ do_install() {
     add_to_image ${ESP_IMAGE}.img ${part3} /Image
     add_to_image ${ESP_IMAGE}.img ${part4} /initramfs
 
-    : > ${OUTPUTS_NAME}.img
-    truncate --size="$(mult ${IMAGE_SIZE} 3)M" ${OUTPUTS_NAME}.img
+    local size=$(get_size ${ROOTFS})
 
-    create_gpt ${OUTPUTS_NAME}.img ${ESP_IMAGE}.img ${DEPLOY_DIR}/images/morello-linux-glibc/rootfs-morello-linux-glibc.ext4
+    local rootfs_size=$(div ${size} 1048576)
+    local total_size=$(add ${ESP_SIZE} ${rootfs_size})
+
+    : > ${OUTPUTS_NAME}.img
+    truncate --size="$(add ${total_size} 50)M" ${OUTPUTS_NAME}.img
+
+    create_gpt ${OUTPUTS_NAME}.img ${ESP_IMAGE}.img ${ROOTFS} ${size}
+
     install ${OUTPUTS_NAME}.img ${D}/${OUTPUTS_NAME}.img
+    install ${ESP_IMAGE}.img ${D}/${ESP_IMAGE}.img
 }
 
 do_deploy() {
+    install -d ${DEPLOYDIR}/ESP
     install ${D}/${OUTPUTS_NAME}.img ${DEPLOYDIR}/${OUTPUTS_NAME}-${MORELLO_ARCH}-${TCLIBC}.img
+    install ${D}/${ESP_IMAGE}.img ${DEPLOYDIR}/ESP/${ESP_IMAGE}.img
+
 }
 addtask deploy after do_install

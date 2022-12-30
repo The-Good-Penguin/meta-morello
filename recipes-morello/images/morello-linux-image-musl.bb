@@ -15,8 +15,6 @@ PROVIDES           = "${OUTPUTS_NAME}"
 
 IMAGE_SIZE           = "100"
 
-# Yocto does not like function derived vars expanded in other functions, it does not like passing by argument from non-constant
-# variables either...so I am just cheerfully hardcoding this as I have more important things to do in life
 IMAGE_SECTORS        = "204800"
 
 LBA                  = "512"
@@ -24,8 +22,9 @@ PART_START_ALIGNMENT = "2048"
 
 ESP_IMAGE            = "${OUTPUTS_NAME}-esp"
 
-do_configure[noexec] = "1"
-do_compile[noexec]   = "1"
+do_configure[noexec]   = "1"
+do_compile[noexec]     = "1"
+# do_install[mcdepends]  = "mc:${BB_CURRENT_MC}:morello-firmware:board-firmware-image:do_deploy"
 
 def get_next_part_start (d):
     next_image_start = int(d.getVar('IMAGE_SECTORS')) + int(d.getVar('PART_START_ALIGNMENT')) + int(d.getVar('PART_START_ALIGNMENT')) - 1

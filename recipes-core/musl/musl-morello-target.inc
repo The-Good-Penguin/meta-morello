@@ -5,7 +5,7 @@ SECTION            = "libs"
 
 DEPENDS:append     = " virtual/musl-morello-libs-native"
 
-MUSL_LDSO_ARCH = "aarch64"
+MUSL_LDSO_ARCH = "aarch64_purecap"
 
 FILES:${PN}  = "${MUSL_INSTALL_DIR}"
 FILES:${PN} += "${MUSL_INSTALL_DIR}${datadir} ${MUSL_INSTALL_DIR}${sysconfdir}"

@@ -17,7 +17,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}:"
 
 SRC_URI = "file://files/init.sh \
            file://files/initramfs.list.template \
-           file://files/README.md \
            "
 do_configure[noexec] = "1"
 do_compile[noexec]   = "1"

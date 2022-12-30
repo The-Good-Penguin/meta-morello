@@ -38,8 +38,6 @@ EDK2_ARCH          = "AARCH64"
 EDK2_BUILD_FLAGS  += "-D ENABLE_MORELLO_CAP=1"
 EDK_COMPILER       = "CLANG35"
 
-EDK_COMPILER:toolchain-clang = "CLANG35"
-
 export CLANG35_AARCH64_PREFIX = "${TARGET_PREFIX}"
 export CLANG35_BIN            = "${LLVM_PATH}/"
 export CLANG35_AARCH64_PREFIX = "${LLVM_PATH}/llvm-"
@@ -48,8 +46,6 @@ export CC_PATH                = "${LLVM_PATH}/clang"
 export LLVM_PATH_35           = "${LLVM_PATH}"
 
 do_deploy[noexec] = "1"
-
-INHIBIT_DEFAULT_DEPS = "1"
 
 do_install() {
     install -d ${D}/firmware

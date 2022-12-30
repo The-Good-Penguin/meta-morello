@@ -31,8 +31,6 @@ TFA_DEBUG        = "0"
 
 ARM_TF_ARCH = "aarch64"
 
-INHIBIT_DEFAULT_DEPS = "1"
-
 EXTRA_OEMAKE += "\
                 CREATE_KEYS=1 \
                 GENERATE_COT=1 \
