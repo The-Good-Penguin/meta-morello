@@ -39,6 +39,10 @@ $ MACHINE=morello-linux-glibc bitbake morello-linux-image
 Alternatively one can use kas:
 
 kas build ./kas/morello-bsp.yml  
+kas build ./kas/morello-linux-musl.yml  
+
+or (a single command is needed for glibc)
+
 kas build ./kas/morello-linux-glibc.yml  
 
 Images
