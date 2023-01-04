@@ -18,7 +18,7 @@ Machines
 The machines have been split into:  
 - morello-bsp for the SD card  
 - morello-linux-musl for the Linux image with musl being the only libc
-- morello-linux-glibc for the Linux image with an arbitrary Yocto image as the rootfs (not switching to it though, not tested)
+- morello-linux-glibc for the Linux image with an arbitrary Yocto image as the rootfs
 
 Building images
 --------------------
