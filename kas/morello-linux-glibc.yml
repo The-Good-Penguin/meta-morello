@@ -5,4 +5,4 @@ header:
 machine: morello-linux-glibc
 target:
   - multiconfig:morello-firmware:board-firmware-image
-  - multiconfig:morello-linux:morello-linux-image
+  - multiconfig:morello-linux-glibc:morello-linux-image

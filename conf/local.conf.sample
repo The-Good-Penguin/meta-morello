@@ -1,6 +1,5 @@
-MACHINE ?= "morello-linux-musl"
 MACHINE ?= "morello-linux-glibc"
-MACHINE ?= "morello-bsp"
+BBMULTICONFIG = "morello-firmware morello-linux-glibc"
 
 BB_NUMBER_THREADS ?= "${@oe.utils.cpu_count()}"
 PARALLEL_MAKE ?= "-j ${@oe.utils.cpu_count()}"

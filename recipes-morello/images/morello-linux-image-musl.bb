@@ -24,7 +24,7 @@ ESP_IMAGE            = "${OUTPUTS_NAME}-esp"
 
 do_configure[noexec]   = "1"
 do_compile[noexec]     = "1"
-# do_install[mcdepends]  = "mc:${BB_CURRENT_MC}:morello-firmware:board-firmware-image:do_deploy"
+do_install[mcdepends]  = "mc:${BB_CURRENT_MC}:morello-firmware:board-firmware-image:do_deploy"
 
 def get_next_part_start (d):
     next_image_start = int(d.getVar('IMAGE_SECTORS')) + int(d.getVar('PART_START_ALIGNMENT')) + int(d.getVar('PART_START_ALIGNMENT')) - 1

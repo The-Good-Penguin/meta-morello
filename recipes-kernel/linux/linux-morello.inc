@@ -13,7 +13,7 @@ PROVIDES                += "virtual/${OUTPUTS_NAME}"
 
 SRC_URI = " \
     git://git.morello-project.org/morello/kernel/linux;protocol=https;tag=${SRCTAG};branch=${SRCBRANCH} \
-    file://defconfig \
+    file://morello_transitional_pcuabi_defconfig \
     "
 
 PV  = "${LINUX_VERSION}+git${SRCPV}"
@@ -26,6 +26,10 @@ BUILD_LD  = "${LLVM_PATH}/ld.lld"
 
 KERNEL_CC  = "${LLVM_PATH}/clang"
 KERNEL_LD  = "${LLVM_PATH}/ld.lld"
+
+ARCH = "arm64"
+
+LINUX_KERNEL_TYPE     ?= "standard"
 
 KERNEL_FEATURES:append = " ${KERNEL_EXTRA_FEATURES}"
 KERNEL_IMAGETYPE       = "Image"

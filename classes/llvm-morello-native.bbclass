@@ -4,13 +4,11 @@ LLVM_VERSION = "13.0.0"
 
 LLVM_PATH    = "${STAGING_DIR_NATIVE}/usr/bin"
 
-ELF_PATCHER  = "${STAGING_BINDIR_NATIVE}/elf-patcher"
-
 INHIBIT_DEFAULT_DEPS = "1"
 
 DEPENDS                                        += "virtual/llvm-morello-native"
-DEPENDS:append:morello-linux-glibc:class-target = " virtual/musl-morello-libs-native virtual/elf-patcher-native"
-DEPENDS:append:morello-linux-musl:class-target  = " virtual/musl-morello-libs-native virtual/elf-patcher-native"
+DEPENDS:append:morello-linux-glibc:class-target = " virtual/musl-morello-libs-native"
+DEPENDS:append:morello-linux-musl:class-target  = " virtual/musl-morello-libs-native"
 
 # rough hack to deal with llvm-morello not being a proper toolchain in its own meta yet
 DEPENDS:remove = "libgcc"

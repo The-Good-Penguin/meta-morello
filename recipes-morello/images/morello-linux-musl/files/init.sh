@@ -24,12 +24,6 @@ echo "Installing busybox"
 
 ! grep -qE $'\t'"devtmpfs$" /proc/filesystems && mdev -s
 
-echo "Testing"
-
-for s in /init.sh.d/*.sh ; do
-    test -e "$s" && . "$s"
-done
-
 ulimit -c unlimited
 
 echo "/bin/sh as PID 1!"

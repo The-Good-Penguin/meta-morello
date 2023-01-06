@@ -4,4 +4,5 @@ header:
     - base.yml
 machine: morello-linux-musl
 target:
-  - morello-linux-image
+  - multiconfig:morello-firmware:board-firmware-image
+  - multiconfig:morello-linux-musl:morello-linux-image

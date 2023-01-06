@@ -2,7 +2,7 @@ OUTPUTS_NAME       ?= "pure-cap-app-default-name"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}:${THISDIR}/${PN}:"
 
-DEPENDS  += "virtual/musl-morello virtual/libarchcap"
+DEPENDS  += "virtual/musl-morello"
 
 do_package[noexec]           = "1"
 do_package_write_rpm[noexec] = "1"
@@ -20,10 +20,9 @@ EXTRA_OEMAKE = "\
                LLVM_PATH='${LLVM_PATH}' \
                NAME='${OUTPUTS_NAME}' \
                OUT='${S}' \
-               ELF_PATCHER='${ELF_PATCHER}' \
-               LIBARCHCAP='${STAGING_DIR_TARGET}${prefix}/include/libarchcap' \
                SYSROOT_LIB='${MUSL_HOME}${libdir}' \
                SYSROOT_INC='${MUSL_HOME}${includedir}' \
+               SYSROOT='${MUSL_HOME}' \
                "
 
 do_compile() {

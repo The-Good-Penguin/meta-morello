@@ -12,7 +12,7 @@ PROVIDES += "virtual/morello-busybox"
 
 SRC_URI = " \
     git://git.morello-project.org/morello/morello-busybox;protocol=https;tag=${SRCTAG};branch=${SRCBRANCH} \
-    file://files/0001-Adding-relative-path-to-the-LLVM-toolchain.patch \
+    file://files/0001-Remove-elf-patch-append-toolchain-with-relative-path.patch \
     "
 
 PV  = "git${SRCPV}"
@@ -25,7 +25,6 @@ do_packagedata[noexec]       = "1"
 do_compile[depends] = "virtual/kernel:do_install"
 
 EXTRA_OEMAKE = "\
-                ELF_PATCH='${ELF_PATCHER}' \
                 MUSL_HOME='${STAGING_DIR_TARGET}${MUSL_INSTALL_DIR}${prefix}' \
                 KHEADERS='${STAGING_KERNEL_BUILDDIR}/kernel-headers/include/' \
             "
