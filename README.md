@@ -23,27 +23,11 @@ The machines have been split into:
 Building images
 --------------------
 
-$ TEMPLATECONF=meta-morello/conf . oe-init-build-env build  
-$ MACHINE=morello-bsp bitbake board-firmware-image  
-
-then:
-
-$ TEMPLATECONF=meta-morello/conf . oe-init-build-env build  
-$ MACHINE=morello-linux-musl bitbake morello-linux-image  
-
-or (mutually exclusive)
-
-$ TEMPLATECONF=meta-morello/conf . oe-init-build-env build  
-$ MACHINE=morello-linux-glibc bitbake morello-linux-image  
-
-Alternatively one can use kas:
-
-kas build ./kas/morello-bsp.yml  
-kas build ./kas/morello-linux-musl.yml  
-
-or (a single command is needed for glibc)
-
 kas build ./kas/morello-linux-glibc.yml  
+
+or 
+
+kas build ./kas/morello-linux-musl.yml  
 
 Images
 ------
