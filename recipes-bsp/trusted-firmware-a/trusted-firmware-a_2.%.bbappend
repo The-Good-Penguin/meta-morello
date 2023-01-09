@@ -42,13 +42,6 @@ EXTRA_OEMAKE += "\
                 ARCH='${ARM_TF_ARCH}' \
             "
 
-unset do_compile[cleandirs]
-
-do_compile:prepend() {
-    make -C ${S}/tools/fiptool
-    make -C ${S}/tools/cert_create
-}
-
 do_install() {
 
     install -d -m 755 ${D}/firmware
@@ -72,6 +65,12 @@ do_install() {
     install -m 0644 "${BUILD_DIR}/fdts/morello_tb_fw_config.dtb" "${D}/firmware/morello_tb_fw_config.dtb"
     install -m 0644 "${BUILD_DIR}/fdts/morello_nt_fw_config.dtb" "${D}/firmware/morello_nt_fw_config.dtb"
     install -m 0644 ${S}/plat/arm/board/common/rotpk/arm_rotprivk_rsa.pem "${D}/firmware/"arm_rotprivk_rsa.pem
+
+    export CC=gcc
+    export LD=ld
+    make -C ${S}/tools/fiptool
+    make -C ${S}/tools/cert_create
+
     install -m 0744 ${S}/tools/fiptool/fiptool "${D}/firmware/"fiptool
     install -m 0744 ${S}/tools/cert_create/cert_create "${D}/firmware/"cert_create
 }
