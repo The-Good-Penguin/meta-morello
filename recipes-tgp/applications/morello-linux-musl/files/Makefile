@@ -23,7 +23,7 @@ all:
 		--target=$(TARGET)
 	$(CC) --target=$(TARGET) $(ARCH) -fuse-ld=lld -rtlib=compiler-rt --sysroot $(SYSROOT) \
 		$(OUT)/$(NAME).c.o \
-		-o $(OUT)/$(NAME) 
+		-o $(OUT)/$(NAME)
 
 clean:
 	rm -f $(OUT)/$(NAME).c.o

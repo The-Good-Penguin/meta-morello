@@ -12,10 +12,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdalign.h>
+#include <stdint.h>
 
 #include <getopt.h>
 #include <memory.h>
 
+#include <cheriintrin.h>
 
 static void usage(void);
 static void subPointersToPointersTest(void);
@@ -30,7 +32,7 @@ static void sigactionAlingment(int signal, siginfo_t *si, void *args);
 
 static void printPointer(void *pointer);
 
-static void * cheri_perms_set(void * pointer, cheri_perms_t perms_new);
+static void * cheri_perms_set(void * pointer, cheri_perms_t perm_new);
 
 typedef void (*functionPointer)(void);
 
@@ -135,11 +137,11 @@ int main(int argc, char **argv)
 /**
  * @brief Prints the pointer meta-data
  *
- * @param pPointer teh pointer
+ * @param pointer teh pointer
  */
 static void printPointer(void *pointer)
 {
-    size_t addr = __builtin_cheri_address_get(pointer);
+    size_t addr = cheri_address_get(pointer);
     size_t base = cheri_base_get(pointer);
     size_t offset = cheri_offset_get(pointer);
     size_t len = cheri_length_get(pointer);
@@ -147,7 +149,16 @@ static void printPointer(void *pointer)
     bool tag = cheri_tag_get(pointer);
 
     printf("Capability size %lx align %lx addr %lX base %lX offset %lX length %lu permissions %lX tag %d \r\n", sizeof(pointer), alignof(pointer), addr, base, offset, len, perm, tag);
-    printf("Is sealed %d, load %d, store %d, execute %d, system %d, seal %d\r\n", archcap_c_is_sealed(pointer), archcap_perms_has_load(pointer), archcap_perms_has_store(pointer), archcap_perms_has_execute(pointer), archcap_perms_has_system(pointer), archcap_perms_has_seal(pointer));
+
+    cheri_perms_t permissions = cheri_perms_get(pointer);
+
+    bool issealed = cheri_is_sealed(pointer);
+    bool hasload  = (permissions & CHERI_PERM_LOAD        ) == CHERI_PERM_LOAD;
+    bool hasstore = (permissions & CHERI_PERM_STORE       ) == CHERI_PERM_STORE;
+    bool hasexec  = (permissions & CHERI_PERM_EXECUTE     ) == CHERI_PERM_EXECUTE;
+    bool hassys   = (permissions & CHERI_PERM_SYSTEM_REGS ) == CHERI_PERM_SYSTEM_REGS;
+    bool hasseal  = (permissions & CHERI_PERM_SEAL        ) == CHERI_PERM_SEAL;
+    printf("Is sealed %d, load %d, store %d, execute %d, system %d, seal %d\r\n", issealed, hasload, hasstore, hasexec, hassys, hasseal);
 }
 
 /**
@@ -227,7 +238,7 @@ static void functionPointersTest(void)
 
     printPointer(pData);
 
-    cheri_perms_t perm  = cheri_perms_get(fp) | CHERI_PERM_STORE;
+    cheri_perms_t perm  = cheri_perms_get((void*)fp) | CHERI_PERM_STORE;
     functionPointer fpE = cheri_perms_set(fp, perm);
 
     printPointer(fpE);
@@ -263,7 +274,7 @@ static void atomicAccess(void)
     printf("Value is %u array is %u \r\n", value, array[0]);
 }
 
-static void * cheri_perms_set(void * pointer, cheri_perms_t perms_new) {
+static void * cheri_perms_set(void * pointer, cheri_perms_t perm_new) {
 
     cheri_perms_t perm_old = cheri_perms_get(pointer);
     return cheri_perms_clear(pointer, perm_old  & ~perm_new);
