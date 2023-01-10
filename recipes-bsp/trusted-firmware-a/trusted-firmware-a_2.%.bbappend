@@ -68,8 +68,8 @@ do_install() {
 
     export CC=gcc
     export LD=ld
-    make -C ${S}/tools/fiptool
-    make -C ${S}/tools/cert_create
+    make -C ${S}/tools/fiptool OPENSSL_DIR=${STAGING_DIR_NATIVE}/${prefix_native} PLAT=${TFA_PLATFORM}
+    make -C ${S}/tools/cert_create OPENSSL_DIR=${STAGING_DIR_NATIVE}/${prefix_native} PLAT=${TFA_PLATFORM}
 
     install -m 0744 ${S}/tools/fiptool/fiptool "${D}/firmware/"fiptool
     install -m 0744 ${S}/tools/cert_create/cert_create "${D}/firmware/"cert_create
