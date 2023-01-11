@@ -1,7 +1,7 @@
-From c355f61ba7ff24ff3a235bb249a745c2ea48400d Mon Sep 17 00:00:00 2001
-From: pzalewski-thegoodpenguin <pzalewski@thegoodpenguin.co.uk>
-Date: Thu, 13 Oct 2022 16:56:49 +0100
-Subject: [PATCH] Basetools remove brotli build errors
+From 27dd7265403d8e8fed99a854b9c3e1db7d79525f Mon Sep 17 00:00:00 2001
+From: Jeremy Maitin-Shepard <jbms@google.com>
+Date: Tue, 14 Sep 2021 12:27:45 -0700
+Subject: [PATCH 09/22] Fix -Werror=vla-parameter errors with GCC 11.2.0
 
 ---
  BaseTools/Source/C/BrotliCompress/brotli/c/dec/decode.c | 6 ++++--
