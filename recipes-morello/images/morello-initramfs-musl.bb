@@ -33,14 +33,8 @@ do_install() {
   sed -e "s@%BUSYBOX%@/${sysroot_prefix}/busybox@" \
     "${WORKDIR}/files/initramfs.list.tmp1" > "${WORKDIR}/files/initramfs.list.tmp2"
 
-  sed -e "s@%PREFIX%@/${sysroot_prefix}${prefix}@" \
-    "${WORKDIR}/files/initramfs.list.tmp2" > "${WORKDIR}/files/initramfs.list.tmp1"
-
   sed -e "s@%APP_DIR%@/${APP_DIR}@" \
     "${WORKDIR}/files/initramfs.list.tmp1" > "${WORKDIR}/files/initramfs.list.tmp2"
-
-  sed -e "s@%MUSL%@/${sysroot_prefix}/musl@" \
-    "${WORKDIR}/files/initramfs.list.tmp2" > "${WORKDIR}/files/initramfs.list"
 
   install -d ${D}/${OUTPUTS_NAME}
 
