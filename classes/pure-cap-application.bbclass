@@ -4,10 +4,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}:${THISDIR}/${PN}:"
 
 DEPENDS  += "virtual/musl-morello"
 
-do_package[noexec]           = "1"
-do_package_write_rpm[noexec] = "1"
-do_packagedata[noexec]       = "1"
-
 MUSL_HOME = "${STAGING_DIR_TARGET}${MUSL_INSTALL_DIR}"
 
 INHIBIT_SYSROOT_STRIP       = "1"

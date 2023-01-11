@@ -10,6 +10,8 @@ FILESEXTRAPATHS:prepend := "${THISDIR}:${THISDIR}/${PN}:"
 DEPENDS  += "virtual/kernel virtual/musl-morello"
 PROVIDES += "virtual/morello-busybox"
 
+RPROVIDES:${PN} += "busybox-morello"
+
 SRC_URI = " \
     git://git.morello-project.org/morello/morello-busybox;protocol=https;tag=${SRCTAG};branch=${SRCBRANCH} \
     file://files/0001-Remove-elf-patch-append-toolchain-with-relative-path.patch \
@@ -18,10 +20,6 @@ SRC_URI = " \
 PV  = "git${SRCPV}"
 S   = "${WORKDIR}/git"
 
-do_package[noexec]           = "1"
-do_package_write_rpm[noexec] = "1"
-do_packagedata[noexec]       = "1"
-
 do_compile[depends] = "virtual/kernel:do_install"
 
 EXTRA_OEMAKE = "\
@@ -29,8 +27,7 @@ EXTRA_OEMAKE = "\
                 KHEADERS='${STAGING_KERNEL_BUILDDIR}/kernel-headers/include/' \
             "
 
-# lack of packaging hacks
-FILES:${PN} += "${bindir}/busybox"
+FILES:${PN}  += "/busybox/busybox"
 SYSROOT_DIRS += "/busybox"
 
 INHIBIT_SYSROOT_STRIP       = "1"

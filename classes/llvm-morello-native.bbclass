@@ -19,7 +19,7 @@ LIBCPLUSPLUS       = "-stdlib-libc++"
 
 export CC          = "${LLVM_PATH}/clang"
 export CXX         = "${LLVM_PATH}/clang++"
-export CPP         = "${LLVM_PATH}/clang"
+export CPP         = "${LLVM_PATH}/clang -E"
 export CCLD        = "${LLVM_PATH}/clang"
 export RANLIB      = "${LLVM_PATH}/llvm-ranlib"
 export AR          = "${LLVM_PATH}/llvm-ar"

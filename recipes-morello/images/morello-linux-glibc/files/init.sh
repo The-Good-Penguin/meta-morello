@@ -50,9 +50,6 @@ echo "Mounting ${DEVID} rootfs with PARTUUID: ${PARTUUID}"
 
 mount ${DEVID} ${ROOT}
 
-mkdir ${ROOT}/usr/pure-cap-apps
-cp -rf pure-cap-apps ${ROOT}/usr
-
 ulimit -c unlimited
 
 cd ${ROOT}

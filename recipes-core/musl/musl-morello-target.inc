@@ -8,7 +8,7 @@ DEPENDS:append     = " virtual/musl-morello-libs-native"
 MUSL_LDSO_ARCH = "aarch64_purecap"
 
 FILES:${PN}  = "${MUSL_INSTALL_DIR}"
-FILES:${PN} += "${MUSL_INSTALL_DIR}${datadir}"
+FILES:${PN} += "${MUSL_INSTALL_DIR}${datadir} ${MUSL_INSTALL_DIR}${bindir} ${MUSL_INSTALL_DIR}${libdir}"
 FILES:${PN} += "${MUSL_INSTALL_DIR}${includedir} ${MUSL_INSTALL_DIR}${includedir}/sys \
                  ${MUSL_INSTALL_DIR}${includedir}/arpa ${MUSL_INSTALL_DIR}${includedir}/bits \
                  ${MUSL_INSTALL_DIR}${includedir}/net ${MUSL_INSTALL_DIR}${includedir}/netinet \
@@ -17,12 +17,13 @@ FILES:${PN} += "${MUSL_INSTALL_DIR}${includedir} ${MUSL_INSTALL_DIR}${includedir
 
 FILES:${PN} += "${nonarch_base_libdir}/ld-musl-${MUSL_LDSO_ARCH}.so.1 ${sysconfdir}/ld-musl-${MUSL_LDSO_ARCH}.path"
 
+FILES:${PN}-staticdev = "${MUSL_INSTALL_DIR}${libdir}/libc.a"
+FILES:${PN}-dev =+ "${MUSL_INSTALL_DIR}${libdir}/libcrypt.a ${MUSL_INSTALL_DIR}${libdir}/libdl.a ${MUSL_INSTALL_DIR}${libdir}/libm.a \
+                    ${MUSL_INSTALL_DIR}${libdir}/libpthread.a ${MUSL_INSTALL_DIR}${libdir}/libresolv.a \
+                    ${MUSL_INSTALL_DIR}${libdir}/librt.a ${MUSL_INSTALL_DIR}${libdir}/libutil.a ${MUSL_INSTALL_DIR}${libdir}/libxnet.a \
+                   "
 
 SYSROOT_DIRS += "${sysconfdir} ${MUSL_INSTALL_DIR}${includedir}"
-
-do_package[noexec]           = "1"
-do_package_write_rpm[noexec] = "1"
-do_packagedata[noexec]       = "1"
 
 do_install() {
 

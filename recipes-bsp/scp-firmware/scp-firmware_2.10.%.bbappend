@@ -77,5 +77,4 @@ do_install() {
             cp -rf "${B}/${target}/bin/"*.bin "${D}/firmware/${target}.bin"
         done
     done
-
 }
