@@ -31,7 +31,7 @@ do_install() {
     "${WORKDIR}/files/initramfs.list.template" > "${WORKDIR}/files/initramfs.list.tmp1"
 
   sed -e "s@%BUSYBOX%@/${sysroot_prefix}/busybox@" \
-    "${WORKDIR}/files/initramfs.list.tmp1" > "${WORKDIR}/files/initramfs.list.tmp2"
+    "${WORKDIR}/files/initramfs.list.tmp1" > "${WORKDIR}/files/initramfs.list"
 
   install -d ${D}/${OUTPUTS_NAME}
 

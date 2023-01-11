@@ -34,7 +34,7 @@ do_install() {
     "${WORKDIR}/files/initramfs.list.tmp1" > "${WORKDIR}/files/initramfs.list.tmp2"
 
   sed -e "s@%APP_DIR%@/${APP_DIR}@" \
-    "${WORKDIR}/files/initramfs.list.tmp1" > "${WORKDIR}/files/initramfs.list.tmp2"
+    "${WORKDIR}/files/initramfs.list.tmp1" > "${WORKDIR}/files/initramfs.list"
 
   install -d ${D}/${OUTPUTS_NAME}
 
