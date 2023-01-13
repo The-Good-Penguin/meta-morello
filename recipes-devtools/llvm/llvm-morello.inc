@@ -21,14 +21,11 @@ SYSROOT_DIRS_NATIVE += "/${OUTPUTS_NAME}"
 
 COMPILER     = "llvm-13.0.1"
 
-LLVM_TARGETS_TO_BUILD = "X86;AArch64"
 LLVM_PROJECTS         = "libcxx;libcxxabi;compiler-rt;libunwind;llvm;clang;lld;lldb"
 LLVM_BUILD_DIR        = "${WORKDIR}/${OUTPUTS_NAME}-build"
-LLVM_INSTALL_DIR      = "${D}/${OUTPUTS_NAME}"
 
 NATIVE_LLVM_PATH  = "${STAGING_LIBDIR_NATIVE}/${COMPILER}/bin"
 LIB_PATH          = "${STAGING_LIBDIR_NATIVE}/${COMPILER}/lib"
-LIB_PATH_RT       = "${STAGING_LIBDIR_NATIVE}/${COMPILER}/lib/clang/13.0.1/lib/linux"
 
 EXTRA_OECMAKE += "-Wno-dev -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
