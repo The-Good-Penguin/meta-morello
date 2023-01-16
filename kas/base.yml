@@ -29,3 +29,4 @@ bblayers_conf_header:
 local_conf_header:
   base: |
     CONF_VERSION = "2"
+    EXTRA_IMAGE_FEATURES = " debug-tweaks "
