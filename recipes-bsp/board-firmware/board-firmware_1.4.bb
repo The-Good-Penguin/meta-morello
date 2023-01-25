@@ -1,7 +1,7 @@
 
 
 COMPATIBLE_MACHINE = "morello"
-SUMMARY            = "$DESCRIPTION"
+SUMMARY            = "Board firmware for Morello"
 DESCRIPTION        = "The SD card image from ARM that contains non compile-able binaries."
 HOMEPAGE           = "https://git.morello-project.org/morello/board-firmware"
 LICENSE            = "STMicroelectronics&BSD-3 & BDS-2"
