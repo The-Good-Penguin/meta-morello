@@ -9,7 +9,7 @@ DEPENDS           += "virtual/board-firmware"
 PROVIDES          += "virtual/${OUTPUTS_NAME}"
 
 SRC_URI            = "gitsm://git.morello-project.org/morello/scp-firmware.git;protocol=https;branch=${SRCBRANCH}"
-SRCREV             = "${AUTOREV}"
+SRCREV             = "758aad2f0c522d2dd7b8f84eca5d9d71fa2d9359"
 PV                 = "2.10.0+git${SRCPV}"
 
 SRCBRANCH          = "morello/master"
